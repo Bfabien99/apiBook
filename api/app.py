@@ -103,7 +103,7 @@ def getBooksById(id):
 @app.route('/fakeData/book/<int:number>')
 def fakeBook(number):
     
-    results = session.execute("SELECT public_id AS id, fullname, birth, bio FROM authors").fetchall()
+    results = session.execute("SELECT public_id, fullname, birth, bio FROM authors").fetchall()
     
     data = [dict(row) for row in results]
         
