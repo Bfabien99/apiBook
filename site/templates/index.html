@@ -4,20 +4,48 @@
 {% endblock %}
 
 {% block content %}
-    <h2>Books</h2>
-    {% if books %}
+{% if books %}
+<center>
+    <i>{{nb_book}} books avilable</i>
+    <br>
+    <i>15 random books of the list</i>
+</center>
+
 <div id="booksBx">
     {% for book in books %}
     <div class="books">
-        <img src="{{book.cover}}" alt="" class="b_cover">
+            <img src="{{book.cover}}" alt="" class="b_cover">
         <p class="b_title">
             {{book.title}}
         </p>
+        <a href="{{url_for('showbook_page', id=book.id)}}" class="btn btn-secondary">see book</a>
     </div>
     {% endfor %}
+    <a href="{{url_for('books_page')}}" class="btn btn-primary">see more books</a>
 </div>
-    
-    {% else %}
-        <h4>No books available</h4>
-    {% endif %}
+
+{% else %}
+<h4>No books available</h4>
+{% endif %}
+<hr>
+{% if authors %}
+<center>
+    <i>{{nb_author}} authors avilable</i>
+    <br>
+    <i>15 random authors of the list</i>
+</center>
+
+<div id="authorsBx">
+    {% for author in authors %}
+    <div class="authors">
+        <p>{{author.fullname}}</p>
+        <a href="{{url_for('showauthor_page', id=author.id)}}" class="btn btn-secondary">see author</a>
+    </div>
+    {% endfor %}
+    <a href="{{url_for('authors_page')}}" class="btn btn-primary">see more authors</a>
+</div>
+
+{% else %}
+<h4>No authors available</h4>
+{% endif %}
 {% endblock %}

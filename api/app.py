@@ -44,7 +44,7 @@ def index():
 
 @app.route('/authors')
 def getAuthors():
-    results = session.execute("SELECT public_id AS id, fullname, birth, bio FROM authors").fetchall()
+    results = session.execute("SELECT public_id AS id, fullname, birth, bio FROM authors ORDER BY fullname").fetchall()
     if results:
         data = [dict(row) for row in results]
         return jsonSend(200, "data found", data)
@@ -65,11 +65,11 @@ def getAuthorsBooks(id):
     author = session.execute("SELECT public_id AS id, fullname, birth, bio FROM authors WHERE public_id = '{}'".format(id)).first()
     if author:
         author = [dict(author)]
-        results = session.execute("SELECT public_id AS id, title, description, cover, date, author_public_id AS author_id FROM books WHERE author_public_id = '{}'".format(id)).fetchall()
+        results = session.execute("SELECT public_id AS id, title, description, cover, date, author_public_id AS author_id FROM books WHERE author_public_id = '{}' ORDER BY title".format(id)).fetchall()
         
         books = [dict(row) for row in results]
         
-        data = [dict(author=author, nb_books=len(books), books=books)]
+        data = dict(author=author, nb_books=len(books), books=books)
         return jsonSend(200, "data found", data)
     return jsonify(dict(message="no data found",results=[]))
     
@@ -79,7 +79,7 @@ def getAuthorsBooks(id):
 
 @app.route('/books')
 def getBooks():
-    results = session.execute("SELECT public_id AS id, title, description, cover, date, author_public_id AS author_id FROM books").fetchall()
+    results = session.execute("SELECT public_id AS id, title, description, cover, date, author_public_id AS author_id FROM books ORDER BY title").fetchall()
     data = [dict(row) for row in results]
     if results:
         data = [dict(row) for row in results]

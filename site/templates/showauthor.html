@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block linkcss %}
+<link rel="stylesheet" href="{{url_for('static', filename='css/index.css')}}">
+{% endblock %}
+
+{% block content %}
+{% if authors %}
+{% for auth in authors %}
+<div class="row">
+    <div class="col-md-4 col-xs-12 text-center">
+        <h4>Author info</h4>
+       <p>Name: <b>{{auth.fullname}}</b></p>
+       <p>Birth: <b>{{auth.birth}}</b></p>
+    </div>
+    
+    <div class="col-md-8 col-xs-12 text-center">
+        <h5>Bio</h5>
+        <p>{{auth.bio}}</p>
+    </div>
+</div>
+{% endfor %}
+<hr>
+<center><h4><u>Books</u></h4></center>
+<div id="booksBx">
+    {% for book in books %}
+    <div class="books">
+            <img src="{{book.cover}}" alt="" class="b_cover">
+        <p class="b_title">
+            {{book.title}}
+        </p>
+        <a href="{{url_for('showbook_page', id=book.id)}}" class="btn btn-secondary">see</a>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="alert alert-danger" role="alert">
+    Wrong identifier
+</div>
+<a href="{{url_for('home_page')}}">Home</a>
+{% endif %}
+{% endblock %}

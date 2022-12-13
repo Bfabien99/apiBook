@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block linkcss %}
+<link rel="stylesheet" href="{{url_for('static', filename='css/index.css')}}">
+{% endblock %}
+
+{% block content %}
+{% if authors %}
+<center>
+    <h2>Authors</h2>
+    <i>{{nb_author}} authors available</i>
+</center>
+
+<div id="authorsBx">
+    {% for author in authors %}
+    <div class="authors">
+        <p>{{author.fullname}}</p>
+        <a href="{{url_for('showauthor_page', id=author.id)}}" class="btn btn-secondary">see author</a>
+    </div>
+    {% endfor %}
+</div>
+
+{% else %}
+<center>
+    <h2 class="alert alert-warning">No author available yet</h2>
+</center>
+{% endif %}
+{% endblock %}
