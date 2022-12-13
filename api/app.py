@@ -91,7 +91,13 @@ def getBooks():
 def getBooksById(id):
     results = session.execute("SELECT public_id AS id, title, description, cover, date, author_public_id AS author_id FROM books WHERE public_id = '{}'".format(id)).first()
     if results:
-        data = [dict(results)]
+        book = [dict(results)]
+        author_id = book[0]["author_id"]
+        
+        author = session.execute("SELECT public_id AS id, fullname, birth, bio FROM authors WHERE public_id = '{}'".format(author_id)).first()
+        author = [dict(author)]
+        
+        data = dict(author=author, books=book)
         return jsonSend(200, "data found", data)
     return jsonify(dict(message="no data found",results=[]))
 
@@ -109,7 +115,7 @@ def fakeBook(number):
         
     for i in range(number):
         r = int(random.randrange(0, len(data)))
-        session.add(Books(public_id=f"{faker.uuid4()}", title=f"{faker.name()}", description=f"{faker.sentence()}", cover=f"{faker.image_url()}", date=f"{faker.date_of_birth()}", author_public_id=f"{data[r]['public_id']}"))
+        session.add(Books(public_id=f"{faker.uuid4()}", title=f"{faker.text(max_nb_chars=50)}", description=f"{faker.sentence()}", cover=f"{faker.image_url()}", date=f"{faker.date_of_birth()}", author_public_id=f"{data[r]['public_id']}"))
         session.commit()
     
     return jsonify(dict(data="ok"))
@@ -123,4 +129,5 @@ def fakeAuthor(number):
     return jsonify(dict(data="ok"))
 
 if __name__ == '__main__':
+    session.rollback()
     app.run(debug=True)

@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block linkcss %}
+<link rel="stylesheet" href="{{url_for('static', filename='css/index.css')}}">
+{% endblock %}
+
+{% block content %}
+    <h2>Books</h2>
+    {% if books %}
+<div id="booksBx">
+    {% for book in books %}
+    <div class="books">
+        <img src="{{book.cover}}" alt="" class="b_cover">
+        <p class="b_title">
+            {{book.title}}
+        </p>
+    </div>
+    {% endfor %}
+</div>
+    
+    {% else %}
+        <h4>No books available</h4>
+    {% endif %}
+{% endblock %}

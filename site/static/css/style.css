@@ -1,0 +1,39 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+html, body{
+    min-height: 100vh;
+}
+
+body{
+    display: flex;
+    flex-direction: column;
+}
+
+#banner{
+    background-color: rgb(48, 48, 73);
+    padding: 10px 20px;
+    color: rgb(255, 255, 255);
+}
+
+nav{
+    display: flex;
+    justify-content: center;
+}
+
+nav ul{
+    display: flex;
+    width: 100%;
+    max-width: 500px;
+    justify-content: space-evenly;
+    padding: 5px;
+}
+
+main{
+    flex-grow: 1;
+    background-color: #eee;
+    justify-content: center;
+}
