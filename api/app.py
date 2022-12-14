@@ -35,14 +35,14 @@ def jsonSend(code:int, message:str, results={}):
     return jsonify(dict(message=message,results=results)), code
 
 
-@app.route('/')
+@app.route('/', methods=['GET','POST'])
 def index():
     results = session.execute("SELECT * FROM authors").fetchall()
     data = [dict(row) for row in results]
     return jsonify(data)
 
 
-@app.route('/authors')
+@app.route('/authors', methods=['GET','POST'])
 def getAuthors():
     results = session.execute("SELECT public_id AS id, fullname, birth, bio FROM authors ORDER BY fullname").fetchall()
     if results:
@@ -51,7 +51,7 @@ def getAuthors():
     return jsonify(dict(message="no data found",results=[]))
 
 
-@app.route('/authors/<id>')
+@app.route('/authors/<id>', methods=['GET'])
 def getAuthorsById(id):
     results = session.execute("SELECT public_id AS id, fullname, birth, bio FROM authors WHERE public_id = '{}'".format(id)).first()
     if results:
@@ -60,7 +60,7 @@ def getAuthorsById(id):
     return jsonify(dict(message="no data found",results=[]))
 
 
-@app.route('/authors/<id>/books')
+@app.route('/authors/<id>/books', methods=['GET','POST'])
 def getAuthorsBooks(id):
     author = session.execute("SELECT public_id AS id, fullname, birth, bio FROM authors WHERE public_id = '{}'".format(id)).first()
     if author:
@@ -77,7 +77,7 @@ def getAuthorsBooks(id):
     
     
 
-@app.route('/books')
+@app.route('/books', methods=['GET','POST'])
 def getBooks():
     results = session.execute("SELECT public_id AS id, title, description, cover, date, author_public_id AS author_id FROM books ORDER BY title").fetchall()
     data = [dict(row) for row in results]
@@ -87,7 +87,7 @@ def getBooks():
     return jsonify(dict(message="no data found",results=[]))
 
 
-@app.route('/books/<id>')
+@app.route('/books/<id>', methods=['GET'])
 def getBooksById(id):
     results = session.execute("SELECT public_id AS id, title, description, cover, date, author_public_id AS author_id FROM books WHERE public_id = '{}'".format(id)).first()
     if results:
@@ -106,7 +106,7 @@ def getBooksById(id):
 
 
 ### Generate Fake Data ###
-@app.route('/fakeData/book/<int:number>')
+@app.route('/fakeData/book/<int:number>', methods=['GET','POST'])
 def fakeBook(number):
     
     results = session.execute("SELECT public_id, fullname, birth, bio FROM authors").fetchall()
@@ -120,7 +120,7 @@ def fakeBook(number):
     
     return jsonify(dict(data="ok"))
 
-@app.route('/fakeData/author/<int:number>')
+@app.route('/fakeData/author/<int:number>', methods=['GET','POST'])
 def fakeAuthor(number):
     for i in range(number):
         session.add(Authors(public_id=f"{faker.uuid4()}", fullname=f"{faker.name()}", birth=f"{faker.date_of_birth()}", bio=f"{faker.text()}"))
